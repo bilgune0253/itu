@@ -1,180 +1,203 @@
 <!DOCTYPE html>
 <html lang="mn">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Валют Хөрвүүлэгч</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #ffffff;
-    }
-    .container {
-      background-color: rgb(52, 209, 215);
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 300px;
-      text-align: center;
-    }
-    input, select {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #151616;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .calculator-buttons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .calculator-buttons button {
-      padding: 20px;
-      font-size: 18px;
-      background-color: #020202;
-      border: 1px solid #3d3737;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Валют Хөрвүүлэгч</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+        }
+
+        .container {
+            background-color: rgb(52, 209, 215);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        input,
+        select {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #151616;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .calculator-buttons button {
+            padding: 20px;
+            font-size: 18px;
+            background-color: #020202;
+            border: 1px solid #3d3737;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+    </style>
 </head>
+
 <body>
 
-  <div class="container">
-    <h2>Валют</h2>
+    <div class="container">
+        <h2>Валют</h2>
 
-    <input type="text" id="amountInput" placeholder="Тоо оруулна уу" readonly>
-    <div class="calculator-buttons">
-      <button onclick="tooNemeh(1)">1</button>
-      <button onclick="tooNemeh(2)">2</button>
-      <button onclick="tooNemeh(3)">3</button>
-      <button onclick="tooNemeh(4)">4</button>
-      <button onclick="tooNemeh(5)">5</button>
-      <button onclick="tooNemeh(6)">6</button>
-      <button onclick="tooNemeh(7)">7</button>
-      <button onclick="tooNemeh(8)">8</button>
-      <button onclick="tooNemeh(9)">9</button>
-      <button onclick="tooNemeh(0)">0</button>
-      <button onclick="appendDecimal()">.</button>
-      <button onclick="clearInput()">C</button>
-      <button onclick="clearInputX()">Clear</button>
+        <input type="text" id="amountInput" placeholder="Тоо оруулна уу" readonly>
+        <div class="calculator-buttons">
+            <button onclick="tooNemeh(1)">1</button>
+            <button onclick="tooNemeh(2)">2</button>
+            <button onclick="tooNemeh(3)">3</button>
+            <button onclick="tooNemeh(4)">4</button>
+            <button onclick="tooNemeh(5)">5</button>
+            <button onclick="tooNemeh(6)">6</button>
+            <button onclick="tooNemeh(7)">7</button>
+            <button onclick="tooNemeh(8)">8</button>
+            <button onclick="tooNemeh(9)">9</button>
+            <button onclick="tooNemeh(0)">0</button>
+            <button onclick="appendDecimal()">.</button>
+            <button onclick="clearInput()">C</button>
+            <button onclick="clearInputX()">Clear</button>
+        </div>
+
+        <select id="fromCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="POUND">POUND</option>
+            <option value="WON">WON</option>
+            <option value="YEN">YEN</option>
+            <option value="YAN">YAN</option>
+            <option value="MNT">MNT</option>
+        </select>
+        <button onclick="swapCurrencies()" style="width: 15% ;padding: 6px 10px; font-size: 14px; float: right;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M4 7h13l-3.5-3.5 1.42-1.42L21.84 9l-6.92 6.92-1.42-1.42L17 11H4V7zm16 10H7l3.5 3.5-1.42 1.42L2.16 15l6.92-6.92 1.42 1.42L7 13h13v4z"/>
+            </svg>
+          </button>
+        <select id="toCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="POUND">POUND</option>
+            <option value="WON">WON</option>
+            <option value="YEN">YEN</option>
+            <option value="YAN">YAN</option>
+            <option value="MNT">MNT</option>
+        </select>
+
+        <button onclick="hurwuuleh()">Хөрвүүлэх</button>
+        <p id="result"></p>
     </div>
 
-    <select id="fromCurrency">
-      <option value="USD">USD</option>
-      <option value="EUR">EUR</option>
-      <option value="POUND">POUND</option>
-      <option value="WON">WON</option>
-      <option value="YEN">YEN</option>
-      <option value="YAN">YAN</option>
-      <option value="MNT">MNT</option>
-    </select>
+    <script>
+        const exchangeArray = [
+            { 'name': 'USD', 'value': 1 },
+            { 'name': 'EUR', 'value': 0.88 },
+            { 'name': 'POUND', 'value': 0.75 },
+            { 'name': 'WON', 'value': 1433 },
+            { 'name': 'YEN', 'value': 142 },
+            { 'name': 'YAN', 'value': 7.31 },
+            { 'name': 'MNT', 'value': 3537 }
+        ];
 
-    <select id="toCurrency">
-      <option value="USD">USD</option>
-      <option value="EUR">EUR</option>
-      <option value="POUND">POUND</option>
-      <option value="WON">WON</option>
-      <option value="YEN">YEN</option>
-      <option value="YAN">YAN</option>
-      <option value="MNT">MNT</option>
-    </select>
+        let inputAmount = '';
 
-    <button onclick="hurwuuleh()">Хөрвүүлэх</button>
-    <p id="result"></p>
-  </div>
+        function tooNemeh(number) {
+            inputAmount += number;
+            document.getElementById('amountInput').value = inputAmount;
+        }
 
-  <script>
-    const exchangeArray = [
-      {'name': 'USD', 'value': 1},
-      {'name': 'EUR', 'value': 0.88},
-      {'name': 'POUND', 'value': 0.75},
-      {'name': 'WON', 'value': 1433},
-      {'name': 'YEN', 'value': 142},
-      {'name': 'YAN', 'value': 7.31},
-      {'name': 'MNT', 'value': 3537}
-    ];
+        function clearInput() {
+            inputAmount = '';
+            document.getElementById('amountInput').value = inputAmount;
+        }
 
-    let inputAmount = '';
+        function clearInputX() {
+            inputAmount = inputAmount.slice(0, -1);
+            document.getElementById("amountInput").value = inputAmount;
+        }
 
-    function tooNemeh(number) {
-      inputAmount += number;
-      document.getElementById('amountInput').value = inputAmount;
-    }
+        function appendDecimal() {
+            if (!inputAmount.includes('.')) {
+                inputAmount += inputAmount === '' ? '0.' : '.';
+                document.getElementById('amountInput').value = inputAmount;
+            }
+        }
 
-    function clearInput() {
-      inputAmount = '';
-      document.getElementById('amountInput').value = inputAmount;
-    }
+        function hurwuuleh() {
+            const amount = parseFloat(inputAmount);
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
 
-    function clearInputX() {
-      inputAmount = inputAmount.slice(0, -1);
-      document.getElementById("amountInput").value = inputAmount;
-    }
+            if (isNaN(amount) || amount <= 0) {
+                document.getElementById('result').innerText = 'zuv utga oruulna uu';
+                return;
+            }
 
-    function appendDecimal() {
-      if (!inputAmount.includes('.')) {
-        inputAmount += inputAmount==='' ? '0.' : '.';
-        document.getElementById('amountInput').value = inputAmount;
-      }
-    }
+            const fromCurrencyValue = exchangeArray.find(currency => currency.name === fromCurrency).value;
+            const toCurrencyValue = exchangeArray.find(currency => currency.name === toCurrency).value;
 
-    function hurwuuleh() {
-      const amount = parseFloat(inputAmount);
-      const fromCurrency = document.getElementById('fromCurrency').value;
-      const toCurrency = document.getElementById('toCurrency').value;
+            const convertedAmount = (amount / fromCurrencyValue) * toCurrencyValue;
+            const formattedAmount = deedtaslal(convertedAmount.toFixed(2));
 
-      if (isNaN(amount) || amount <= 0) {
-        document.getElementById('result').innerText = 'zuv utga oruulna uu';
-        return;
-      }
+            document.getElementById('result').innerText = `${amount} ${fromCurrency} = ${formattedAmount} ${toCurrency}`;
+        }
 
-      const fromCurrencyValue = exchangeArray.find(currency => currency.name === fromCurrency).value;
-      const toCurrencyValue = exchangeArray.find(currency => currency.name === toCurrency).value;
+        function deedtaslal(value) {
+            const parts = value.toString().split('.');
+            const integerPart = parts[0];
+            const decimalPart = parts.length > 1 ? '.' + parts[1] : '';
 
-      const convertedAmount = (amount / fromCurrencyValue) * toCurrencyValue;
-      const formattedAmount = deedtaslal(convertedAmount.toFixed(2));
+            let result = '';
+            let len = integerPart.length;
 
-      document.getElementById('result').innerText = `${amount} ${fromCurrency} = ${formattedAmount} ${toCurrency}`;
-    }
+            let firstGroupLen = len % 3 === 0 ? 3 : len % 3;
+            result += integerPart.slice(0, firstGroupLen);
 
-    function deedtaslal(value) {
-  const parts = value.toString().split('.');
-  const integerPart = parts[0];
-  const decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+            for (let i = firstGroupLen; i < len; i += 3) {
+                result += `'` + integerPart.slice(i, i + 3);
+            }
 
-  let result = '';
-  let len = integerPart.length;
+            return result + decimalPart;
+        }
+        function swapCurrencies() {
+    const fromCurrency = document.getElementById('fromCurrency');
+    const toCurrency = document.getElementById('toCurrency');
 
-  let firstGroupLen = len % 3 === 0 ? 3 : len % 3;
-  result += integerPart.slice(0, firstGroupLen);
-
-  for (let i = firstGroupLen; i < len; i += 3) {
-    result += `'` + integerPart.slice(i, i + 3);
-  }
-
-  return result + decimalPart;
+    const temp = fromCurrency.value;
+    fromCurrency.value = toCurrency.value;
+    toCurrency.value = temp;
 }
 
 
-  </script>
+
+    </script>
 
 </body>
+
 </html>

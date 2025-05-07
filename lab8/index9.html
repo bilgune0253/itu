@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2n zadargaa</title>
+</head>
+<body>
+    <h2>garaas ugsun toog 2n zeregtiin niilbert zadalna</h2>
+  
+    <input type="number" id="numberInput" placeholder="too oruulna uu" />
+    <button onclick="decompose()">zadlah</button>
+  
+    <div class="result" id="result"></div>
+  
+    <script>
+      function decompose() {
+        const num = parseInt(document.getElementById('numberInput').value);
+        const resultDiv = document.getElementById('result');
+  
+        if (isNaN(num) || num < 1) {
+          resultDiv.textContent = "Zuvhun 1 ees ih natural too oruulna uu!!!.";
+          return;
+        }
+  
+        let n = num;
+        let powers = [];
+  
+        let exponent = Math.floor(Math.log2(n));
+        while (n > 0) {
+          const power = 2 ** exponent;
+          if (power <= n) {
+            powers.push(`2<sup>${exponent}</sup>`);
+            n -= power;
+          }
+          exponent--;
+        }
+  
+        resultDiv.innerHTML = `${num} = ${powers.join(" + ")}`;
+      }
+    </script>
+  </body>
+  </html>
