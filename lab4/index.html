@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="mn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My CV</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            color: #f4e9d8;
+            background-image: url('Designer.jpeg');
+            background-size: 80% auto;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-blend-mode: multiply;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 1100px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #d4af37;
+        }
+
+        .sidebar {
+            width: 300px;
+            padding: 20px;
+            text-align: center;
+            border-right: 2px solid #d4af37;
+        }
+
+        .sidebar img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #d4af37;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #d4af37;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #d4af37;
+            color: black;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(212, 175, 55, 0.5);
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .content p {
+            transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+        }
+
+        .content p:hover {
+            transform: translateY(-3px);
+            text-shadow: 2px 2px 10px rgba(212, 175, 55, 0.6);
+        }
+
+        .section {
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px solid #d4af37;
+        }
+
+        .active {
+            display: block;
+        }
+
+        h1,
+        h2 {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="me.jpg" alt="Profile Picture">
+            <ul>
+                <li onclick="showSection('contact')">Холбоо барих</li>
+                <li onclick="showSection('experience')">Ажлын туршлага</li>
+                <li onclick="showSection('education')">Боловсрол</li>
+                <li onclick="showSection('skills')">Ур чадвар</li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1>Б.Билгүүн</h1>
+            <p><strong>Оюутан</strong></p>
+
+            <div id="contact" class="section active">
+                <h2>Холбоо барих</h2>
+                <p>email: Bilguuneerk@gmail.com</p>
+                <p>Утас: (+976)80210740</p>
+                <p>Байршил: Улаанбаатарын хаа нэгтээ</p>
+            </div>
+
+            <div id="experience" class="section">
+                <h2>Ажлын туршлага</h2>
+                <p><strong>Одоогоор байхгүй</strong> - </p>
+
+            </div>
+
+            <div id="education" class="section">
+                <h2>Боловсрол</h2>
+                <p><strong>Ерөнхий Боловсрол</strong> - Архангай аймаг, Эрдэнэбулган сум, Лаборатори I сургууль</p>
+                <p><strong>Дээд Боловсрол</strong> - Монгол улсын их сургууль, Програм хангамж хөтөлбөрөөр суралцаж
+                    байгаа, Хараахан эзэмшээгүй</p>
+            </div>
+            <div id="skills" class="section">
+                <h2>Ур чадвар</h2>
+                <p><strong>Мэдэх програмчлалын хэл</strong></p>
+                <p>HTML, CSS, java, JavaScript, C, C++</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

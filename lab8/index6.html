@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Байрны мэдээлэл тоотоор</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h2>Бодлого-6 Байшин 9 давхар, 3 орцтой, давхартаа 4 айлтай бол гараас өгсөн тоот нь хэддүгээр орцны хэддүгээр давхарын хэд дэх хаалга вэ
+    тодорхойлох</h2>
+
+  <label>Тоот оруулна уу (1–108):</label>
+  <input type="number" id="apartmentNumber">
+  <button onclick="calculate()">Тооцоолох</button>
+
+  <p id="result"></p>
+
+  <script>
+    function calculate() {
+      const number = parseInt(document.getElementById("apartmentNumber").value);
+
+      // Baishingiin ugugdul
+      const davhar = 9; // niit 9 davhar
+      const ailDavhart = 4; // neg davhart 4 ail
+      const ortsTotal = 3; // niit ortsnii too
+      const ailNegOrts = davhar * ailDavhart; // neg orts dotorh ailnii too
+
+      // buruu orolt shalgah
+      if (isNaN(number) || number < 1 || number > ortsTotal * ailNegOrts) {
+        document.getElementById("result").innerText = "1–108 хооронд тоо оруулна уу.";
+        return;
+      }
+
+      // orts
+      const orc = Math.ceil(number / ailNegOrts);
+
+      // orts dotorh bairnii too
+      const bairDotor = number - (orc - 1) * ailNegOrts;
+
+      // davhar
+      const davharToo = Math.ceil(bairDotor / ailDavhart);
+
+      // haalganii dugaar(1-4)
+      let haalga = bairDotor % ailDavhart;
+      if (haalga === 0) haalga = 4;
+
+      // medeelel haruulah
+      document.getElementById("result").innerText =
+        `${number}-р тоот бол ${orc}-р орцны, ${davharToo}-р давхарын, ${haalga}-р хаалга юм.`;
+    }
+  </script>
+</body>
+</html>

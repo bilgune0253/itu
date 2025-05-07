@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Тэгш ба сондгой ялгах</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h2> Бодлого-5 Хүснэгтэнд (array)-д байгаа утгуудыг тэгш сондгойгоор ялгаж харуулах</h2>
+  <input type="text" id="arrayInput" placeholder="Жишээ: 1, 2, 3, 4, 5">
+  <button onclick="separateEvenOdd()">Ялгаж харуулах</button>
+  <p id="evenResult"></p>
+  <p id="oddResult"></p>
+
+  <script>
+    function separateEvenOdd() {
+      const input = document.getElementById("arrayInput").value.trim();
+      const numbers = input.split(',').map(num => Number(num.trim()));
+      const even = [];
+      const odd = [];
+
+      if (numbers.some(n => isNaN(n))) {
+        document.getElementById("evenResult").innerText = " ',' тэмдэгтээр тусгаарлаж оруулна уу!";
+        document.getElementById("oddResult").innerText = "";
+        return;
+      }
+
+      numbers.forEach(num => {
+        if (num % 2 === 0) {
+          even.push(num);
+        } else {
+          odd.push(num);
+        }
+      });
+
+      document.getElementById("evenResult").innerText = "Тэгш тоонууд: " + (even.length ? even.join(", ") : "байхгүй");
+      document.getElementById("oddResult").innerText = "Сондгой тоонууд: " + (odd.length ? odd.join(", ") : "байхгүй");
+    }
+  </script>
+</body>
+</html>

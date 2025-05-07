@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Palindrome too</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h2> Бодлого-1 Вэб сайтад орсон хүний нэрийг асуугаад нэр нь палиндром мөн эсэхийг шалгаx</h2>
+  <input type="text" id="nameInput" placeholder="Нэрээ оруулна уу">
+  <button onclick="checkner()">Шалгах</button>
+  <p id="result"></p>
+
+  <script>
+    function checkner() {
+      let name = document.getElementById("nameInput").value.trim().toLowerCase();
+      let reversed = name.split("").reverse().join("");
+      let result = (name === reversed) ? "Палиндром нэр мөн" : "Палиндром нэр биш";
+      document.getElementById("result").innerText = result;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Цифрүүдийн нийлбэр</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h2> Бодлого-2 Гараас өгсөн тооны цифрүүдийн нийлбэрийг олox
+  </h2>
+  <input type="number" id="numInput" placeholder="Тоогоо оруулна уу">
+  <button onclick="niilberoloh()">Нийлбэр олох</button>
+  <p id="niilber"></p>
+
+  <script>
+    function niilberoloh() {
+      let num = document.getElementById("numInput").value;
+      let sum = 0;
+      for (let digit of num) {
+        if (!isNaN(digit)) sum += parseInt(digit);
+      }
+      document.getElementById("niilber").innerText = `Нийлбэр: ${sum}`;
+    }
+  </script>
+</body>
+</html>

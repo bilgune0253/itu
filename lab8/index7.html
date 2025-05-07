@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>Өглөө ба Орой Дүрс</title>
+  <style>
+    .square {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+    }
+
+    .ugluu {
+      background-color: green;
+      top: 10px;
+      left: 10px;
+    }
+
+    .oroi {
+      background-color: red;
+      bottom: 20px;
+      right: 10px;
+    }
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+    <h2>Бодлого-7 Вэб сайтруу өглөө ороход ногоон дөрвөлжин дүрсийг зүүн дээд буланд, орой ороход улаан дөрвөлжин дүрсийг баруун доод буланд харагдуул</h2>
+  <script>
+    const hour = new Date().getHours();
+    const square = document.createElement("div");
+    square.classList.add("square");
+
+    if (hour >= 5 && hour < 12) {
+      // ugluu 5–11 цаг
+      square.classList.add("ugluu");
+    } else if (hour >= 18 && hour <= 23) {
+      // oroi 18–23 цаг
+      square.classList.add("oroi");
+    }
+
+    document.body.appendChild(square);
+  </script>
+</body>
+</html>
