@@ -1634,4 +1634,8 @@
       margin-bottom: 1rem;
     }
   }
-  
+  /* “What We Do?” хэсгийн картын margin-ыг override хийж доошлуулна */
+section.wrapper.bg-gray .card {
+  margin-top: 6rem !important; /* хэрэгтэй бол 8rem, 10rem болгож болно */
+  margin-bottom: 0 !important; /* доош давхардахгүйн тулд */
+}
