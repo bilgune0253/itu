@@ -240,7 +240,6 @@ input {
     background-color: #ffffffd9;
     border-top: 5px solid var(--primary);
     border-radius: 8px;
-    font-style: italic;
     color: var(--foreground);
 }
 #show-scoreboard-btn {
