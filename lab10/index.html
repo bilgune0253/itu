@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дүүжилж алъя гэдэг тоглоом</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="word.js" defer></script>
+    
+</head>
+<body>
+    <!-- Welcome Modal -->
+    <div id="welcome-modal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <h2>Дүүжилж алъя гэдэг тоглоом</h2>
+            <input type="text" id="nickname-input" placeholder="Нэвтрэх нэр...">
+            <button id="start-game-btn">Эхлэх</button>
+        </div>
+    </div>
+    
+    <!-- Game Container -->
+    <div id="game-container" class="container">
+        <div class="info-panel">
+            <div class="info-item">
+                <div class="info-label">Тоглогч</div>
+                <div id="player-name" class="info-value">Player</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Оноо</div>
+                <div id="score" class="info-value">0</div>
+            </div>
+            <div class="info-item">
+                <div id="timer" class="info-value">01:00</div>
+            </div>
+           
+        </div>
+        <!--Hangman iihaa dursuudiiig zurah heseg-->
+        <div id="hangman-container">
+            <svg id="hangman-drawing" viewBox="0 0 200 200">
+                <!-- Duujluuriin zurj bga heseg -->
+                <line x1="40" y1="180" x2="160" y2="180" stroke="black" stroke-width="3" />
+                <line x1="60" y1="180" x2="60" y2="20" stroke="black" stroke-width="3" />
+                <line x1="60" y1="20" x2="120" y2="20" stroke="black" stroke-width="3" />
+                <line x1="120" y1="20" x2="120" y2="40" stroke="black" stroke-width="3" />
+                
+                <!-- hunii biyiin hesguudiig zurj bga heseg tolgoi ih biy 2gar 2hul -->
+                <circle id="head" cx="120" cy="60" r="20" fill="transparent" stroke="black" stroke-width="3" style="display: none;" />
+                <line id="body" x1="120" y1="80" x2="120" y2="120" stroke="black" stroke-width="3" style="display: none;" />
+                <!--2 gariin-->
+                <g id="arms" style="display: none;">
+                    <line x1="120" y1="90" x2="90" y2="100" stroke="black" stroke-width="3" />
+                    <line x1="120" y1="90" x2="150" y2="100" stroke="black" stroke-width="3" />
+                </g>
+                <!-- 2 huliiin-->
+                <g id="legs" style="display: none;">
+                    <line x1="120" y1="120" x2="100" y2="150" stroke="black" stroke-width="3" />
+                    <line x1="120" y1="120" x2="140" y2="150" stroke="black" stroke-width="3" />
+                </g>
+            </svg>
+        </div>
+        
+        <div id="current-hint"></div>
+        <!-- usgiig bagtaah durvuljin hairtsag-->
+        <div id="word-container">
+            <!-- Letter boxes will be generated here -->
+        </div>
+        
+        <div id="keyboard">
+            <!-- Keyboard aguulagdah heseg -->
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button id="show-scoreboard-btn">best 10</button>
+        </div>
+    </div>
+    
+    <!-- togloom duusah uyd garch ireh heseg -->
+    <div id="game-over-modal" class="modal">
+        <div class="modal-content">
+            <h2>Конец!!</h2>
+            <p id="game-over-message"></p>
+            <p id="final-score"></p>
+            <button id="play-again-btn">Дахин Тоглох</button>
+        </div>
+    </div>
+    
+    <!-- Scoreboard buyu top toglogchidiig harah hesg -->
+    <div id="scoreboard-modal" class="modal">
+        <div class="modal-content">
+            <h2>best 10 Тоглогч</h2>
+            <table id="scoreboard-table">
+                <thead>
+                    <tr>
+                        <th>Байр</th>
+                        <th>Нэр</th>
+                        <th>Оноо</th>
+                    </tr>
+                </thead>
+                <tbody id="scoreboard-body">
+                    <!-- Scoreboard iin oroltuudiig uusgene -->
+                </tbody>
+            </table>
+            <button id="close-scoreboard-btn">Буцах</button>
+        </div>
+    </div>
+
+    <script>
+        
+        // Mongol keyboard iin husnegt
+        const keyboardLayout = [
+            ["Ф", "Ц", "У", "Ж", "Э", "Н", "Г", "Ш", "Ү", "З", "К", "E","Ъ"],
+            ["Й", "Ы", "Б", "Ө", "А", "Х", "Р", "О", "Л", "Д", "П"],
+            ["Я", "Ч", "Ё", "С", "М", "И", "Т", "Ь", "В","Ю"]
+        ];
+        
+        // DOM Elementuud
+        const welcomeModal = document.getElementById("welcome-modal");
+        const nicknameInput = document.getElementById("nickname-input");
+        const startGameBtn = document.getElementById("start-game-btn");
+        const gameContainer = document.getElementById("game-container");
+        const wordContainer = document.getElementById("word-container");
+        const timerElement = document.getElementById("timer");
+        const scoreElement = document.getElementById("score");
+        const playerNameElement = document.getElementById("player-name");
+        const keyboardElement = document.getElementById("keyboard");
+        const gameOverModal = document.getElementById("game-over-modal");
+        const gameOverMessage = document.getElementById("game-over-message");
+        const finalScoreElement = document.getElementById("final-score");
+        const playAgainBtn = document.getElementById("play-again-btn");
+        const showScoreboardBtn = document.getElementById("show-scoreboard-btn");
+        const scoreboardModal = document.getElementById("scoreboard-modal");
+        const closeScoreboardBtn = document.getElementById("close-scoreboard-btn");
+        const scoreboardBody = document.getElementById("scoreboard-body");
+        const currentHintElement = document.getElementById("current-hint");
+        
+        // Hangman burdel hesguud (4 hesegtei)
+        const hangmanParts = [
+            document.getElementById("head"),
+            document.getElementById("body"),
+            document.getElementById("arms"),
+            document.getElementById("legs")
+        ];
+        
+        // Mongol keyboard-iig ajilluulah heseg
+        function initializeKeyboard() {
+            keyboardElement.innerHTML = "";
+            
+            keyboardLayout.forEach(row => {
+                const rowDiv = document.createElement("div");
+                rowDiv.style.display = "flex";
+                rowDiv.style.justifyContent = "center";
+                rowDiv.style.margin = "5px 0";
+                
+                row.forEach(letter => {
+                    const key = document.createElement("div");
+                    key.className = "key";
+                    key.textContent = letter;
+                    key.addEventListener("click", () => handleLetterGuess(letter));
+                    rowDiv.appendChild(key);
+                });
+                
+                keyboardElement.appendChild(rowDiv);
+            });
+        }
+        
+        // ugiig delgetsluu haruulah heseg
+        function initializeWordDisplay() {
+
+            wordContainer.innerHTML = "";
+            
+            for (let i = 0; i < gameData.currentWord.length; i++) {
+
+                const letterBox = document.createElement("div");
+
+                letterBox.className = "letter-box";
+
+                letterBox.dataset.index = i;
+
+                wordContainer.appendChild(letterBox);
+            }
+        }
+        
+        // random ugiig word.js file aas songon avna 
+        function selectRandomWord() {
+
+            const randomIndex = Math.floor(Math.random() * gameData.wordList.length);
+
+            gameData.currentWord = gameData.wordList[randomIndex].word;
+
+            gameData.currentHint = gameData.wordList[randomIndex].hint;
+
+            currentHintElement.textContent = gameData.currentHint;
+        }
+        
+        // Usgiig taamaglah heseg
+        function handleLetterGuess(letter) {
+
+            if (!gameData.isGameActive || gameData.guessedLetters.includes(letter)) {
+
+                return;
+
+            }
+            
+            // Taasan ugiig temdegleh heseg
+            gameData.guessedLetters.push(letter);
+            const keys = document.querySelectorAll(".key");
+            keys.forEach(key => {
+                if (key.textContent === letter) {
+                    key.classList.add("used");
+                }
+            });
+            
+            if (gameData.currentWord.includes(letter)) {
+                // Zuw taasan usgiig shalgana
+                let allLettersGuessed = true;
+                
+                for (let i = 0; i < gameData.currentWord.length; i++) {
+                    if (gameData.currentWord[i] === letter) {
+                        const letterBox = wordContainer.querySelector(`[data-index="${i}"]`);
+                        letterBox.textContent = letter;
+                    }
+                    
+                    const letterBox = wordContainer.querySelector(`[data-index="${i}"]`);
+                    if (!letterBox.textContent) {
+                        allLettersGuessed = false;
+                    }
+                }
+                
+                // Onoog nemeh heseg
+                gameData.score += 10;
+                scoreElement.textContent = gameData.score;
+                
+                // herwee usgiig zuw taasan bol daraagiin usegruu shiljih
+                if (allLettersGuessed) {
+                    // daraagin usgiig songon
+                    gameData.guessedLetters = [];
+                    selectRandomWord();
+                    initializeWordDisplay();
+                    resetKeyboard();
+                }
+            } else {
+                // usgiig buruu taaval hangman biyiin heseg zurj buruu taasan usgiig 1 r nemne
+                gameData.wrongGuesses++;
+                updateHangman();
+                
+                // buruu taasan useg 4 bol togloom duussan esehiig shalgana
+                if (gameData.wrongGuesses >= 4) {
+                    endGame(false);
+                }
+            }
+        }
+        
+        // taasan useg tsairch haragdana keyboardig shineshilen
+        function resetKeyboard() {
+            const keys = document.querySelectorAll(".key");
+            keys.forEach(key => {
+                key.classList.remove("used");
+            });
+        }
+        
+        // hangman biyiin hesgiiig shinechleh heseg
+        function updateHangman() {
+            if (gameData.wrongGuesses > 0 && gameData.wrongGuesses <= hangmanParts.length) {
+                hangmanParts[gameData.wrongGuesses - 1].style.display = "block";
+            }
+        }
+        
+        // biyiin hesgiig shineshilen
+        function resetHangman() {
+            hangmanParts.forEach(part => {
+                part.style.display = "none";
+            });
+        }
+        
+        // tsagiig tootsoh heseg ba tsag ni 60 s buurna
+        function startTimer() {
+            gameData.timerInterval = setInterval(() => {
+                gameData.timer--;
+                updateTimerDisplay();
+                
+                if (gameData.timer <= 0) {
+                    endGame(true);
+                }
+            }, 1000);
+        }
+        
+        // tsagaa shinechilen
+        function updateTimerDisplay() {
+            const minutes = Math.floor(gameData.timer / 60);
+            const seconds = gameData.timer % 60;
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // tsag duusaj togloom duussa esehiig shalgana
+        function endGame(timeUp) {
+            clearInterval(gameData.timerInterval);
+            gameData.isGameActive = false;
+            
+            // tsag duusval daraah zurvasuud haragdana
+            if (timeUp) {
+                gameOverMessage.textContent = "Цаг дууслаа!";
+            } else {
+                gameOverMessage.textContent = "Та хожигдлоо!";
+            }
+            
+            finalScoreElement.textContent = `Таны оноо: ${gameData.score}`;
+            
+            // scoreboard shinechilen
+            updateScoreboard();
+            
+            // game over modal iig haruulna
+            gameOverModal.style.display = "flex";
+        }
+        
+        // Shineer dahin togloomiig ehluuleh
+        function startGame() {
+            // Hide welcome modal and show game container
+            welcomeModal.style.display = "none";
+            gameContainer.style.display = "block";
+            
+            // toglogciin neriig tohiruuln
+            gameData.playerName = nicknameInput.value.trim() || "Тоглогч";
+            playerNameElement.textContent = gameData.playerName;
+            
+            // toglogciin neriig cookkie d hadgalna
+            setCookie("playerName", gameData.playerName, 30);
+            
+            // Reset game state
+            gameData.guessedLetters = [];
+            gameData.wrongGuesses = 0;
+            gameData.score = 0;
+            gameData.timer = 60;
+            scoreElement.textContent = gameData.score;
+            updateTimerDisplay();
+            
+            // togloomooo ehluuleh reset hiine
+            resetHangman();
+            
+            // ugee randomoor songoh
+            selectRandomWord();
+            
+            // ui hesgiig heregjuulen
+            initializeWordDisplay();
+            initializeKeyboard();
+            
+            // Start tsag
+            gameData.isGameActive = true;
+            startTimer();
+        }
+        
+        // scoreboard shinecilen
+        function updateScoreboard() {
+            // local storage -aas buyu cookie nees toglogcdiin onoog avah
+            let scores = JSON.parse(localStorage.getItem("hangmanScores")) || [];
+            
+            // odoogiin score iig nemeh
+            scores.push({
+                name: gameData.playerName,
+                score: gameData.score
+            });
+            
+            // onoogoor ni erembelen
+            scores.sort((a, b) => b.score - a.score);
+            
+            // zuwhun ehnii 10 toglogciig
+            scores = scores.slice(0, 10);
+            
+            // butsaaj cookie d hadgalna
+            localStorage.setItem("hangmanScores", JSON.stringify(scores));
+            
+            // toglogc top 5 d orson esehiig shalgana
+            const playerRank = scores.findIndex(s => s.name === gameData.playerName && s.score === gameData.score) + 1;
+            if (playerRank > 0 && playerRank <= 5) {
+                gameOverMessage.textContent = `Баяр хүргэе! Та TOP 5-д ${playerRank}-р байранд орлоо!`;
+            }
+        }
+        
+        // Display scoreboard
+        function displayScoreboard() {
+            // Get current scores from local storage
+            const scores = JSON.parse(localStorage.getItem("hangmanScores")) || [];
+            
+            // Clear current scoreboard
+            scoreboardBody.innerHTML = "";
+            
+            // Add scores to table
+            scores.forEach((score, index) => {
+                const row = document.createElement("tr");
+                
+                // Highlight current player's score
+                if (score.name === gameData.playerName && score.score === gameData.score) {
+                    row.classList.add("highlight");
+                }
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${score.name}</td>
+                    <td>${score.score}</td>
+                `;
+                
+                scoreboardBody.appendChild(row);
+            });
+            
+            // Show scoreboard modal
+            scoreboardModal.style.display = "flex";
+        }
+        
+        // Event listeners
+        startGameBtn.addEventListener("click", startGame);
+        
+        playAgainBtn.addEventListener("click", () => {
+            gameOverModal.style.display = "none";
+            startGame();
+        });
+        
+        showScoreboardBtn.addEventListener("click", displayScoreboard);
+        
+        closeScoreboardBtn.addEventListener("click", () => {
+            scoreboardModal.style.display = "none";
+        });
+        
+        // Handle keyboard input
+        document.addEventListener("keydown", (e) => {
+            if (!gameData.isGameActive) return;
+            
+            const key = e.key.toUpperCase();
+            const allowedKeys = [];
+            
+            // Flatten keyboard layout
+            keyboardLayout.forEach(row => {
+                row.forEach(letter => {
+                    allowedKeys.push(letter);
+                });
+            });
+            
+            if (allowedKeys.includes(key)) {
+                handleLetterGuess(key);
+            }
+        });
+        
+        // Cookie functions
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+        
+        function getCookie(name) {
+            const cookieName = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+            
+            for (let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        }
+        
+        // toglogciin ner hadgalagdsan esehig
+        window.addEventListener("load", () => {
+            const savedName = getCookie("playerName");
+            if (savedName) {
+                nicknameInput.value = savedName;
+            }
+        });
+        
+    </script>
+</body>
+</html>
